@@ -9,7 +9,7 @@ using Microsoft.Win32;
 
 class Program
 {
-    const string fontUrl = "https://github.com/be5invis/Iosevka/releases/download/v33.2.6/SuperTTC-SGr-Iosevka-33.2.6.zip";
+    const string fontUrl = "https://github.com/be5invis/Iosevka/releases/download/v33.2.6/SuperTTC-Iosevka-33.2.6.zip";
     const string regValueName = "Iosevka Super TTC (TrueType)";
     
     static string fontsDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Fonts");
