@@ -16,7 +16,7 @@ class Program
     static string tempDir = Path.Combine(Path.GetTempPath(), "tempfontplace");
     const string regPath = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts";
 
-    static async Task Main(string[] args)
+    static void Main(string[] args)
     {
         if (!IsRunAsAdmin())
         {
@@ -31,7 +31,7 @@ class Program
         }
 
         string command = args[0].ToLowerInvariant();
-        if (command == "install") await InstallFont();
+        if (command == "install") InstallFont();
         else if (command == "uninstall") UninstallFont();
         else ShowUsage();
 
@@ -54,7 +54,7 @@ class Program
         return principal.IsInRole(WindowsBuiltInRole.Administrator);
     }
 
-    static async Task InstallFont()
+    static void InstallFont()
     {
         using (var key = Registry.LocalMachine.OpenSubKey(regPath, writable: false))
         {
@@ -69,7 +69,7 @@ class Program
         Console.WriteLine("Downloading font...");
         Directory.CreateDirectory(tempDir);
         string zipPath = Path.Combine(tempDir, "iosevka.zip");
-        await DownloadFile(fontUrl, zipPath);
+        DownloadFile(fontUrl, zipPath);
 
         Console.WriteLine("Extracting font...");
         string ttcPath = ExtractTtc(zipPath);
@@ -146,12 +146,12 @@ class Program
         }
     }
 
-    static async Task DownloadFile(string url, string outputPath)
+    static void DownloadFile(string url, string outputPath)
     {
         using var client = new HttpClient();
-        using var stream = await client.GetStreamAsync(url);
+        using var bytes = client.GetByteArrayAsync(url);
         using var fileStream = new FileStream(outputPath, FileMode.Create, FileAccess.Write);
-        await stream.CopyToAsync(fileStream);
+        fileStream.Write(bytes.Result);
     }
 
     static string ExtractTtc(string zipPath)
