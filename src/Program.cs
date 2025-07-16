@@ -12,7 +12,6 @@ class Program
     static readonly string fontsDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Fonts");
     const string regPath = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts";
     const string regValueName = "Iosevka Super TTC (TrueType)";
-    static readonly string fontFileName = "SuperTTC-SGr-Iosevka-33.2.6.ttc";
 
     static async System.Threading.Tasks.Task Main(string[] args)
     {
