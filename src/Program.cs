@@ -2,60 +2,42 @@
 using System.IO;
 using System.IO.Compression;
 using System.Net.Http;
-using Microsoft.Win32;
 using System.Security.Principal;
-using System.Threading;
 using System.Threading.Tasks;
+
+using Microsoft.Win32;
 
 class Program
 {
     const string fontUrl = "https://github.com/be5invis/Iosevka/releases/download/v33.2.6/SuperTTC-SGr-Iosevka-33.2.6.zip";
-    static readonly string tempDir = Path.Combine(Path.GetTempPath(), "iosevka-superttc");
-    static readonly string fontsDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Fonts");
-    const string regPath = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts";
     const string regValueName = "Iosevka Super TTC (TrueType)";
+    
+    static string fontsDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "Fonts");
+    static string tempDir = Path.Combine(Path.GetTempPath(), "tempfontplace");
+    const string regPath = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts";
 
     static async Task Main(string[] args)
     {
-        try
+        if (!IsRunAsAdmin())
         {
-            if (!IsRunAsAdmin())
-            {
-                Console.WriteLine("This program must be run as Administrator.");
-                return;
-            }
-
-            if (args.Length == 0)
-            {
-                ShowUsage();
-                return;
-            }
-
-            string command = args[0].ToLowerInvariant();
-
-            if (command == "install")
-            {
-                await InstallFont();
-            }
-            else if (command == "uninstall")
-            {
-                UninstallFont();
-            }
-            else
-            {
-                ShowUsage();
-            }
+            Console.WriteLine("This program must be run as Administrator.");
+            return;
         }
-        catch (Exception ex)
+
+        if (args.Length == 0)
         {
-            Console.WriteLine("Error: " + ex.Message);
+            ShowUsage();
+            return;
         }
-        finally
-        {
-            Cleanup();
-            Console.WriteLine("Press any key to exit...");
-            Console.ReadKey();
-        }
+
+        string command = args[0].ToLowerInvariant();
+        if (command == "install") await InstallFont();
+        else if (command == "uninstall") UninstallFont();
+        else ShowUsage();
+
+        Cleanup();
+        Console.WriteLine("Press any key to exit...");
+        Console.ReadKey();
     }
 
     static void ShowUsage()
