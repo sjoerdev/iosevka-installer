@@ -4,6 +4,8 @@ using System.IO.Compression;
 using System.Net.Http;
 using Microsoft.Win32;
 using System.Security.Principal;
+using System.Threading;
+using System.Threading.Tasks;
 
 class Program
 {
@@ -13,7 +15,7 @@ class Program
     const string regPath = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts";
     const string regValueName = "Iosevka Super TTC (TrueType)";
 
-    static async System.Threading.Tasks.Task Main(string[] args)
+    static async Task Main(string[] args)
     {
         try
         {
@@ -70,7 +72,7 @@ class Program
         return principal.IsInRole(WindowsBuiltInRole.Administrator);
     }
 
-    static async System.Threading.Tasks.Task InstallFont()
+    static async Task InstallFont()
     {
         using (var key = Registry.LocalMachine.OpenSubKey(regPath, writable: false))
         {
@@ -162,7 +164,7 @@ class Program
         }
     }
 
-    static async System.Threading.Tasks.Task DownloadFile(string url, string outputPath)
+    static async Task DownloadFile(string url, string outputPath)
     {
         using var client = new HttpClient();
         using var stream = await client.GetStreamAsync(url);
