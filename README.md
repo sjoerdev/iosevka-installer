@@ -6,5 +6,5 @@ This is a command line tool for auto installing [Iosevka](https://typeof.net/Ios
 - Run this command to build the binary: ``dotnet publish -c release -o ./``
 
 ## Usage:
-- This command to install the font: ``iosevka.exe install``
-- This command to uninstall the font: ``iosevka.exe uninstall``
+- This command to install the font: ``sudo iosevka.exe install``
+- This command to uninstall the font: ``sudo iosevka.exe uninstall``
